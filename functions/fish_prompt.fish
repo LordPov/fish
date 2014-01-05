@@ -857,13 +857,13 @@ end
 function _lp_checks -e lp_feature_option_changed --description 'Checks'
     function _lp_check_features --description 'Check whether a tool is installed, and enable/disable it'
         # Disable features if the tool is not installed.
-        [ (command command -v git) ]; or set -e LP_ENABLE_GIT
-        [ (command command -v svn) ]; or set -e LP_ENABLE_SVN
-        [ (command command -v fossil) ]; or set -e LP_ENABLE_FOSSIL
-        [ (command command -v hg) ]; or set -e LP_ENABLE_HG
-        [ (command command -v bzr) ]; or set -e LP_ENABLE_BZR
-        [ (command command -v acpi) ]; or set -e LP_ENABLE_BATT
-        [ (command command -v sensors) ]; or set -e LP_ENABLE_SENSORS
+        [ (type git >/dev/null 2>&1) ]; or set -e LP_ENABLE_GIT
+        [ (type svn >/dev/null 2>&1) ]; or set -e LP_ENABLE_SVN
+        [ (type fossil >/dev/null 2>&1) ]; or set -e LP_ENABLE_FOSSIL
+        [ (type hg >/dev/null 2>&1) ]; or set -e LP_ENABLE_HG
+        [ (type bzr >/dev/null 2>&1) ]; or set -e LP_ENABLE_BZR
+        [ (type acpi >/dev/null 2>&1) ]; or set -e LP_ENABLE_BATT
+        [ (type sensors >/dev/null 2>&1) ]; or set -e LP_ENABLE_SENSORS
     end
 
     function _lp_choose_time --description 'Choose the right _lp_time'
