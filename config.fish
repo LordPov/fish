@@ -8,16 +8,15 @@ switch (uname)
         set -x BROWSER "/Applications/Google\ Chrome.app"
         #set -x PYTHONPATH "${HOME}/Library/Python/2.7/site-packages"
     case Linux
+        set -x BROWSER (which links)
         switch (lsb_release -i | cut -c 17-)
             case Arch
                 set -x JAVA_HOME "/usr/lib/jvm/java-7-openjdk/jre"
                 set -x M2_HOME "/usr/share/maven"
-                set -x BROWSER (which links)
             case Fedora
                 echo "config.fish: you need to check the Fedora settings!"
                 set -x JAVA_HOME "/usr/lib/jvm/java-7-openjdk/jre"
                 set -x M2_HOME "/usr/share/maven"
-                set -x BROWSER (which chromium)
             case '*'
                 echo "config.fish: unsupported distro"
         end
