@@ -855,7 +855,7 @@ function _lp_config --description 'Configure liquidprompt'
 end
 
 function _lp_checks -e lp_feature_option_changed --description 'Checks'
-    function _lp_check_features --description 'Check whether a tool is installed, and enable/disable it'
+    function _lp_check_features_backup --description 'Check whether a tool is installed, and enable/disable it'
         # Disable features if the tool is not installed.
         [ (type git >/dev/null 2>&1) ]; or set -e LP_ENABLE_GIT
         [ (type svn >/dev/null 2>&1) ]; or set -e LP_ENABLE_SVN
@@ -864,6 +864,10 @@ function _lp_checks -e lp_feature_option_changed --description 'Checks'
         [ (type bzr >/dev/null 2>&1) ]; or set -e LP_ENABLE_BZR
         [ (type acpi >/dev/null 2>&1) ]; or set -e LP_ENABLE_BATT
         [ (type sensors >/dev/null 2>&1) ]; or set -e LP_ENABLE_SENSORS
+    end
+
+    function _lp_check_features --description 'Check whether a tool is installed, and enable/disable it'
+        # Disable features if the tool is not installed.
     end
 
     function _lp_choose_time --description 'Choose the right _lp_time'
