@@ -9,14 +9,12 @@ switch (uname)
         #set -x PYTHONPATH "${HOME}/Library/Python/2.7/site-packages"
     case Linux
         set -x BROWSER (which links)
+        set -x M2_HOME "/usr/share/maven"
         switch (lsb_release -i | cut -c 17-)
             case Arch
                 set -x JAVA_HOME "/usr/lib/jvm/java-7-openjdk/jre"
-                set -x M2_HOME "/usr/share/maven"
             case Fedora
-                echo "config.fish: you need to check the Fedora settings!"
-                set -x JAVA_HOME "/usr/lib/jvm/java-7-openjdk/jre"
-                set -x M2_HOME "/usr/share/maven"
+                set -x JAVA_HOME "/opt/imc/oracle-jdk-1.7.0_u11"
             case '*'
                 echo "config.fish: unsupported distro"
         end
