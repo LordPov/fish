@@ -31,6 +31,7 @@ set -x EDITOR (which vi)
 set -x CLICOLOR 1
 set -x SBT_OPTS "-XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=256M"
 set -x HOMEBREW_GITHUB_API_TOKEN "d56b5a03b50908001f669fdfd9b1e70f4c557716"
+set -x PYTHONPATH "/usr/local/lib/python2.7/site-packages:$PYTHONPATH"
 
 #
 # IMC
