@@ -39,7 +39,7 @@ set -x HOMEBREW_GITHUB_API_TOKEN "d56b5a03b50908001f669fdfd9b1e70f4c557716"
 #set -x JAVA_OPTIONS "-da:ca.odell.glazedlists.impl.adt.barcode2.SimpleTree"
 set -x LOG_DIR {$HOME}/Work/log
 set -x DEPLOYMENT_DIR {$HOME}/Work/deployment
-set -x MAVEN_OPTS -Xmx1024m
+set -x MAVEN_OPTS "-Xmx1024m -XX:MaxPermSize=128m"
 set -x TAGID_DIR {$HOME}/data/tagid
 #set -x http_proxy 'http://unixproxy:3128/'
 #set -x https_proxy 'http://unixproxy:3128/'
