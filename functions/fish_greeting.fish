@@ -1,4 +1,4 @@
 function fish_greeting
     set_color -o black
-	#fortune -a
+	fortune -a
 end
