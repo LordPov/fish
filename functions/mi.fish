@@ -1,3 +1,3 @@
 function mi -d "Maven install, skip tests"
-    mvn install -DskipTests $argv
+    mvn install -q -DskipTests $argv
 end

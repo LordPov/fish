@@ -302,6 +302,36 @@ function _lp_init --description 'Initialize liquidprompt'
         end
     end
 
+    function _lp_temp_sensors --description 'Auxiliary function for _lp_temperature'
+        # Return the average system temperature we get through the sensors command
+        set -l count 0
+        set -l temperature 0
+        for i in (sensors | grep -E "^(Core|temp)" | sed -r "s/.*: *\+([0-9]*)\..°.*/\1/g")
+            set temperature (math "$temperature + $i")
+            set count (math "$count + 1")
+        end
+        echo -ne (math "$temperature / $count")
+    end
+
+    function _lp_temperature --description 'Print the temperature'
+        # Will display the numeric value as we got it through the _lp_temp_function
+        # and colorize it through _lp_color_map.
+        if not set -q LP_ENABLE_TEMP
+            return
+        end
+
+        set -l temperature (_lp_temp_sensors)
+        if [ $temperature -ge $LP_TEMP_THRESHOLD ]
+            set -l ret
+            if set -q LP_PERCENTS_ALWAYS
+                echo -ne "$NO_COL""$LP_MARK_TEMP"(_lp_color_map "$temperature" 120)"$temperature""°"
+            else
+                set ret (_lp_color_map "$temperature" 120)"$LP_MARK_TEMP"
+            end
+            echo -ne "$ret""$NO_COL"" "
+        end
+    end
+
     function _lp_battery --description 'Auxiliary function for _lp_battery_color'
         if not set -q LP_ENABLE_BATT
             return
@@ -425,8 +455,10 @@ function _lp_init --description 'Initialize liquidprompt'
         set -l running (jobs | grep "$_LP_RUNNING_JOB_WORD" | wc -l)
         set -l stopped (math "$all_jobs - $running")
         set -l n_screen (screen -ls 2> /dev/null | grep -c "Detach")
+        set -l n_tmux (tmux list-sessions 2> /dev/null ` grep -cv "attached")
         [ -z "$n_screen" ]; and set n_screen 0
-        set -l detached (math "$n_screen")
+        [ -z "$n_tmux" ]; and set n_tmux 0
+        set -l detached (math "$n_screen + $n_tmux")
         set -l m_detached "d"
         set -l m_stop "z"
         set -l m_run "&"
@@ -460,7 +492,8 @@ function _lp_init --description 'Initialize liquidprompt'
             if [ (git status 2> /dev/null | grep "# Untracked") ]
                 set end "$LP_COLOR_CHANGES""$LP_MARK_UNTRACKED""$end"
             end
-            if [ (git stash list 2> /dev/null) ]
+            set -l stash_lines (git stash list 2>/dev/null | wc -l | tr -d ' ')
+            if test $stash_lines -ne 0
                 set end "$LP_COLOR_COMMITS""$LP_MARK_STASH""$end"
             end
 
@@ -732,7 +765,7 @@ function _lp_config --description 'Configure liquidprompt'
         set -g LP_PATH_LENGTH 35
         set -g LP_PATH_KEEP 2
         set -e LP_HOSTNAME_ALWAYS
-        set -g LP_USER_ALWAYS 1
+        set -e LP_USER_ALWAYS
         set -g LP_PERCENTS_ALWAYS
         set -e LP_PS1
         set -g LP_PROMPT_PREFIX ""
@@ -855,19 +888,15 @@ function _lp_config --description 'Configure liquidprompt'
 end
 
 function _lp_checks -e lp_feature_option_changed --description 'Checks'
-    function _lp_check_features_backup --description 'Check whether a tool is installed, and enable/disable it'
-        # Disable features if the tool is not installed.
-        [ (type git >/dev/null 2>&1) ]; or set -e LP_ENABLE_GIT
-        [ (type svn >/dev/null 2>&1) ]; or set -e LP_ENABLE_SVN
-        [ (type fossil >/dev/null 2>&1) ]; or set -e LP_ENABLE_FOSSIL
-        [ (type hg >/dev/null 2>&1) ]; or set -e LP_ENABLE_HG
-        [ (type bzr >/dev/null 2>&1) ]; or set -e LP_ENABLE_BZR
-        [ (type acpi >/dev/null 2>&1) ]; or set -e LP_ENABLE_BATT
-        [ (type sensors >/dev/null 2>&1) ]; or set -e LP_ENABLE_SENSORS
-    end
-
     function _lp_check_features --description 'Check whether a tool is installed, and enable/disable it'
         # Disable features if the tool is not installed.
+        [ (command command -v git) ]; or set -e LP_ENABLE_GIT
+        [ (command command -v svn) ]; or set -e LP_ENABLE_SVN
+        [ (command command -v fossil) ]; or set -e LP_ENABLE_FOSSIL
+        [ (command command -v hg) ]; or set -e LP_ENABLE_HG
+        [ (command command -v bzr) ]; or set -e LP_ENABLE_BZR
+        [ (command command -v acpi) ]; or set -e LP_ENABLE_BATT
+        [ (command command -v sensors) ]; or set -e LP_ENABLE_SENSORS
     end
 
     function _lp_choose_time --description 'Choose the right _lp_time'
@@ -1150,6 +1179,7 @@ function _lp_prompt -e fish_prompt --description 'Compute the prompt'
     # (and LP_VENV ?)
 
     set -l LP_JOBS (_lp_jobcount)
+    set -l LP_TEMP (_lp_temperature)
     set -l LP_LOAD (_lp_cpu_load_color)
     set -l LP_BATT (_lp_battery_color)
     set -l LP_TIME (_lp_time)
@@ -1161,7 +1191,7 @@ function _lp_prompt -e fish_prompt --description 'Compute the prompt'
     if [ -n "$LP_PS1" ]
         set LP_PROMPT (eval echo $LP_PS1)
     else
-        set LP_PROMPT "$LP_PROMPT_PREFIX""$LP_TIME""$LP_BATT""$LP_LOAD""$LP_JOBS"
+        set LP_PROMPT "$LP_PROMPT_PREFIX""$LP_TIME""$LP_BATT""$LP_LOAD""$LP_TEMP""$LP_JOBS"
         set LP_PROMPT "$LP_PROMPT""$LP_BRACKET_OPEN""$LP_USER""$LP_HOST""$LP_PERM"
         set LP_PROMPT "$LP_PROMPT""$LP_PWD""$LP_BRACKET_CLOSE""$LP_VENV""$LP_PROXY"
         if set -q _LP_USER_IS_ROOT
