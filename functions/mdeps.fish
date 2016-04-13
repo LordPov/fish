@@ -1,3 +1,3 @@
 function mdeps -d "Show Maven dependency tree"
-    mvn dependency:tree -q -Dverbose $argv
+    mvn dependency:tree -Dverbose $argv
 end
