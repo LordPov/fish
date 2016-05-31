@@ -890,13 +890,19 @@ end
 function _lp_checks -e lp_feature_option_changed --description 'Checks'
     function _lp_check_features --description 'Check whether a tool is installed, and enable/disable it'
         # Disable features if the tool is not installed.
-        [ (command command -v git) ]; or set -e LP_ENABLE_GIT
-        [ (command command -v svn) ]; or set -e LP_ENABLE_SVN
-        [ (command command -v fossil) ]; or set -e LP_ENABLE_FOSSIL
-        [ (command command -v hg) ]; or set -e LP_ENABLE_HG
-        [ (command command -v bzr) ]; or set -e LP_ENABLE_BZR
-        [ (command command -v acpi) ]; or set -e LP_ENABLE_BATT
-        [ (command command -v sensors) ]; or set -e LP_ENABLE_SENSORS
+        switch $_LP_OS
+            case Linux FreeBSD SunOS
+                set cmd_cmd "command"
+            case Darwin
+                set cmd_cmd "command command"
+        end
+        [ (eval $cmd_cmd -v git) ]; or set -e LP_ENABLE_GIT
+        [ (eval $cmd_cmd -v svn) ]; or set -e LP_ENABLE_SVN
+        [ (eval $cmd_cmd -v fossil) ]; or set -e LP_ENABLE_FOSSIL
+        [ (eval $cmd_cmd -v hg) ]; or set -e LP_ENABLE_HG
+        [ (eval $cmd_cmd -v bzr) ]; or set -e LP_ENABLE_BZR
+        [ (eval $cmd_cmd -v acpi) ]; or set -e LP_ENABLE_BATT
+        [ (eval $cmd_cmd -v sensors) ]; or set -e LP_ENABLE_SENSORS
     end
 
     function _lp_choose_time --description 'Choose the right _lp_time'
