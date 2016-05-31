@@ -52,4 +52,6 @@ alias dkm='docker-machine'
 
 alias dog='pygmentize'
 
+alias vi='vim'
+
 #source /Users/bryan/.iterm2_shell_integration.fish
