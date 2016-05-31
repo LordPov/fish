@@ -28,7 +28,10 @@ end
 # General
 #
 set -x CDPATH . ~ ~/data
-set -x PATH $HOME/bin $HOME/miniconda3/bin $JAVA_HOME/bin /usr/local/bin $PATH
+if test -e $HOME/miniconda3/bin
+    set miniconda_bin = $HOME/miniconda3/bin
+end
+set -x PATH $HOME/bin $miniconda_bin $JAVA_HOME/bin /usr/local/bin $PATH
 set -x EDITOR (which vi)
 #set -x PAGER (which vimpager)
 set -x CLICOLOR 1
