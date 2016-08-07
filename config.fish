@@ -6,8 +6,10 @@ switch (uname)
         set -x JAVA_HOME (/usr/libexec/java_home)
         set -x M2_HOME "/usr/local/opt/maven/libexec"
         set -x BROWSER "/Applications/Google\ Chrome.app"
-        set -x LESSOPEN "| /usr/local/bin/src-hilite-lesspipe.sh %s"
-        set -x LESS ' -R '
+        if test -e /usr/local/bin/src-hilite-lesspipe.sh 
+            set -x LESSOPEN "| /usr/local/bin/src-hilite-lesspipe.sh %s"
+            set -x LESS ' -R '
+        end
         #set -x PYTHONPATH "${HOME}/Library/Python/2.7/site-packages"
     case Linux
         set -x BROWSER (which links)
