@@ -6,7 +6,7 @@ switch (uname)
         set -x JAVA_HOME (/usr/libexec/java_home)
         set -x M2_HOME "/usr/local/opt/maven/libexec"
         set -x BROWSER "/Applications/Google\ Chrome.app"
-        if test -e /usr/local/bin/src-hilite-lesspipe.sh 
+        if test -e /usr/local/bin/src-hilite-lesspipe.sh
             set -x LESSOPEN "| /usr/local/bin/src-hilite-lesspipe.sh %s"
             set -x LESS ' -R '
         end
@@ -16,7 +16,7 @@ switch (uname)
         set -x M2_HOME "/usr/share/maven"
         switch (lsb_release -i | cut -c 17-)
             case Arch
-                set -x JAVA_HOME "/usr/lib/jvm/java-7-openjdk/jre"
+                set -x JAVA_HOME "/usr/lib/jvm/java-8-openjdk/jre"
             case Fedora
                 set -x JAVA_HOME "/opt/imc/oracle-jdk-1.7.0_u11"
             case '*'
