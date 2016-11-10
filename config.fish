@@ -10,7 +10,8 @@ switch (uname)
             set -x LESSOPEN "| /usr/local/bin/src-hilite-lesspipe.sh %s"
             set -x LESS ' -R '
         end
-        #set -x PYTHONPATH "${HOME}/Library/Python/2.7/site-packages"
+        end
+        set -x DYLD_FALLBACK_LIBRARY_PATH $HOME/miniconda3/lib $DYLD_FALLBACK_LIBRARY_PATH
     case Linux
         set -x BROWSER (which links)
         set -x M2_HOME "/usr/share/maven"
@@ -38,7 +39,6 @@ set -x EDITOR (which vi)
 #set -x PAGER (which vimpager)
 set -x CLICOLOR 1
 set -x SBT_OPTS "-XX:+CMSClassUnloadingEnabled"
-#set -x PYTHONPATH "/usr/local/lib/python2.7/site-packages:$PYTHONPATH"
 set -x GOPATH "/usr/local"
 
 #
