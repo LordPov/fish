@@ -52,11 +52,31 @@ set -x TAGID_DIR {$HOME}/data/tagid
 #set -x http_proxy 'http://unixproxy:3128/'
 #set -x https_proxy 'http://unixproxy:3128/'
 
+#
+# Git Aliases
+#
+alias gco='git checkout'
+alias gci='git commit'
+alias gb='git branch'
+alias gpl='git pull --rebase'
+alias gps='git push'
+alias gs='git status -sb'
+alias gd='git diff'
+alias gl='git log'
+alias gsl='git shortlog'
+alias gwtf='git-wtf'
+alias gup='git-reup'
+
+#
+# Docker Aliases
+#
 alias dk='docker'
 alias dkm='docker-machine'
 
+#
+# Other Aliases
+#
 alias dog='pygmentize'
-
 alias vi='vim'
 
 #source /Users/bryan/.iterm2_shell_integration.fish
