@@ -10,7 +10,6 @@ switch (uname)
             set -x LESSOPEN "| /usr/local/bin/src-hilite-lesspipe.sh %s"
             set -x LESS ' -R '
         end
-        end
         set -x DYLD_FALLBACK_LIBRARY_PATH $HOME/miniconda3/lib $DYLD_FALLBACK_LIBRARY_PATH
     case Linux
         set -x BROWSER (which links)
