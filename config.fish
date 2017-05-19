@@ -59,4 +59,6 @@ alias dog='pygmentize'
 
 alias vi='vim'
 
+alias sa='screen -r'
+
 #source /Users/bryan/.iterm2_shell_integration.fish
