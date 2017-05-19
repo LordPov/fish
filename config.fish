@@ -10,7 +10,7 @@ switch (uname)
             set -x LESSOPEN "| /usr/local/bin/src-hilite-lesspipe.sh %s"
             set -x LESS ' -R '
         end
-        #set -x PYTHONPATH "${HOME}/Library/Python/2.7/site-packages"
+        set -x DYLD_FALLBACK_LIBRARY_PATH $HOME/miniconda3/lib $DYLD_FALLBACK_LIBRARY_PATH
     case Linux
         set -x BROWSER (which links)
         set -x M2_HOME "/usr/share/maven"
@@ -32,13 +32,16 @@ end
 set -x CDPATH . ~ ~/data
 if test -e $HOME/miniconda3/bin
     set miniconda_bin = $HOME/miniconda3/bin
+	source $HOME/miniconda3/etc/fish/conf.d/conda.fish
 end
-set -x PATH $HOME/bin $miniconda_bin $JAVA_HOME/bin /usr/local/bin $PATH
+if test -e $HOME/google-cloud-sdk/bin
+    set gcloud_bin = $HOME/google-cloud-sdk/bin
+end
+set -x PATH $HOME/bin $miniconda_bin $gcloud_bin $JAVA_HOME/bin /usr/local/bin $PATH
 set -x EDITOR (which vi)
 #set -x PAGER (which vimpager)
 set -x CLICOLOR 1
 set -x SBT_OPTS "-XX:+CMSClassUnloadingEnabled"
-#set -x PYTHONPATH "/usr/local/lib/python2.7/site-packages:$PYTHONPATH"
 set -x GOPATH "/usr/local"
 
 #
@@ -52,11 +55,31 @@ set -x TAGID_DIR {$HOME}/data/tagid
 #set -x http_proxy 'http://unixproxy:3128/'
 #set -x https_proxy 'http://unixproxy:3128/'
 
+#
+# Git Aliases
+#
+alias gco='git checkout'
+alias gci='git commit'
+alias gb='git branch'
+alias gpl='git pull --rebase'
+alias gps='git push'
+alias gs='git status -sb'
+alias gd='git diff'
+alias gl='git log'
+alias gsl='git shortlog'
+alias gwtf='git-wtf'
+alias gup='git-reup'
+
+#
+# Docker Aliases
+#
 alias dk='docker'
 alias dkm='docker-machine'
 
+#
+# Other Aliases
+#
 alias dog='pygmentize'
-
 alias vi='vim'
 
 alias sa='screen -r'
